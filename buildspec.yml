@@ -1,0 +1,40 @@
+version: 0.2
+
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)  
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/api-service ./api-gateway
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/chat-service ./chat-service
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/doctor-patient-common ./doctor-patient-common
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/eureka ./eureka
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/insurance-service ./insurance-service
+      - docker build -t 668853609085.dkr.ecr.us-east-1.amazonaws.com/superadmin ./superadmin
+      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/api-service:latest
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/chat-service:latest
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/doctor-patient-common:latest
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/eureka:latest
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/insurance-service:latest
+      - docker push 668853609085.dkr.ecr.us-east-1.amazonaws.com/superadmin:latest
+      - echo Writing image definitions file...
+      - printf '[{"name":"frontend","imageUri":"%s"}]' 668853609085.dkr.ecr.us-east-1.amazonaws.com/api-service:latest > imagedefinitions.json
+      - cat imagedefinitions.json 
+artifacts:
+    files: imagedefinitions.json
+
+
+
+
+

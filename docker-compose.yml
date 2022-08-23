@@ -1,0 +1,38 @@
+version: "3"
+services:
+  api-gateway:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/api-service"
+    mem_limit: 128m
+    hostname: api-gateway
+    ports:
+      - "8765:8765"
+  chat:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/chat-service"
+    mem_limit: 128m
+    hostname: chat
+    ports:
+      - "8089:8089"
+  portal:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/doctor-patient-common"
+    mem_limit: 512m
+    hostname: portal
+    ports:
+      - "8090:8090"
+  eureka:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/eureka"
+    mem_limit: 128m
+    hostname: eureka
+    ports:
+      - "8761:8761"
+  insurance-service:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/insurance-service"
+    mem_limit: 256m
+    hostname: insurance-service
+    ports:
+      - "8761:8761"
+  superadmin:
+    image: "668853609085.dkr.ecr.us-east-1.amazonaws.com/superadmin"
+    mem_limit: 128m
+    hostname: superadmin
+    ports:
+      - "8091:8091"

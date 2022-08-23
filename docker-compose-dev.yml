@@ -1,0 +1,43 @@
+version: '3'
+services:
+  api-gateway:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api-gateway
+    ports:
+      - '8765:8765'
+  chat:
+    build:
+      dockerfile: Dockerfile
+      context: ./chat-service
+    ports:
+      - '8089:8089'
+  portal:
+    build:
+      dockerfile: Dockerfile
+      context: ./doctor-patient-common
+    ports:
+      - '8090:8090'
+  eureka:
+    depends_on:
+      - api-gateway
+      - portal
+    build:
+      dockerfile: Dockerfile
+      context: ./eureka
+    ports:
+      - '8761:8761'
+  insurance:
+    build:
+      dockerfile: Dockerfile
+      context: ./insurance-service
+    ports:
+      - '8081:8081'
+  superadmin:
+    build:
+      dockerfile: Dockerfile
+      context: ./superadmin
+    ports:
+      - '8091:8091'
+
